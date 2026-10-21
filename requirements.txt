@@ -1,0 +1,8 @@
+numpy>=1.26
+scipy>=1.10
+scikit-learn>=1.3
+pandas>=2.0
+matplotlib>=3.8
+pytest>=7
+# optional: the knee baseline uses it when available
+# kneed>=0.8
