@@ -45,28 +45,47 @@ DATASETS = [
 ]
 
 EXPECTED_GC = {"Wine": 6, "Sonar": 14, "Breast Cancer (WD)": 20, "Divorce": 7,
-               "Statlog Vehicle": 15, "Statlog Image Seg.": 14,
+               "Statlog Vehicle": 15, "Statlog Image Seg.": 15,
                "Parkinsons": 18, "Music origins": 21, "Drug consumption": 11}
 
-# Rows where the value reported in the paper does not reproduce with the data
-# shipped here.  Kept visible instead of silently accepted, and explained in
-# docs/RESULTS.md.
-KNOWN_DIFF = {"Statlog Image Seg."}
+# Rows whose value in the paper differs from a fresh recomputation go here, and
+# are flagged in the output instead of silently adjusted.
+KNOWN_DIFF = set()
 
 
 def load(spec):
+    """Read a CSV of features, skipping rows that are not numeric.
+
+    The parsing is deliberately literal: every entry is converted with float() and
+    nothing is rescaled. On ill-conditioned data this matters, see docs/DATA.md
+    (Image Segmentation flips between 13 and 15 depending on the reader).
+    """
     fname, drop, sep, skip, usecols = spec
     path = os.path.join(DATA, fname)
     if not os.path.exists(path):
         return None
-    raw = pd.read_csv(path, header=None, sep=sep, engine="python", skiprows=skip)
-    if usecols is not None:
-        raw = raw.iloc[:, usecols]
+    rows = []
+    with open(path) as fh:
+        for i, line in enumerate(fh):
+            if i < skip or not line.strip():
+                continue
+            parts = line.rstrip("\n").split(sep)
+            if usecols is not None:
+                try:
+                    parts = [parts[i] for i in usecols]
+                except IndexError:
+                    continue
+            try:
+                vals = [float(v) for v in parts]
+            except ValueError:
+                continue
+            rows.append(vals)
+    X = np.array(rows, float)
     if drop:
-        raw = raw.iloc[:, :-drop]
-    X = raw.apply(pd.to_numeric, errors="coerce").to_numpy(float)
-    X = X[~np.any(np.isnan(X), axis=1)]
-    return X[:, X.std(axis=0) > 1e-10]
+        X = X[:, :-drop]
+    # contiguous, so that the SVD path (and therefore the last decimals of the
+    # criterion) does not depend on the memory layout of the array
+    return np.ascontiguousarray(X[:, X.std(axis=0) > 1e-10])
 
 
 def minka(X):

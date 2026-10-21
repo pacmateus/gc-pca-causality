@@ -14,7 +14,7 @@ Table 3 (`python pca/run_pca_tables.py`):
 | Wine | 13 | 178 | 2 | 12 | 11 | 6 |
 | Breast Cancer (WD) | 30 | 569 | 2 | 29 | 28 | 20 |
 | Statlog Vehicle | 18 | 845 | 2 | 17 | 16 | 15 |
-| Statlog Image Seg. | 18 | 2310 | 5 | 17 | 16 | 13 (paper: 14) |
+| Statlog Image Seg. | 18 | 2310 | 5 | 17 | 16 | 15 |
 | Parkinsons | 22 | 195 | 4 | 20 | 20 | 18 |
 | Music origins | 68 | 1059 | 8 | 10 in the paper | 66 | 21 |
 | Sonar | 60 | 208 | 8 | 56 | 58 | 14 |

@@ -21,10 +21,14 @@ of the tables are the shape of these files.
 Two notes on this table. The preprocessing is not neutral: dropping the wrong
 column still produces a plausible dimension (Wine returns 6 even with 12 of its 13
 features), so `pca/run_pca_tables.py` checks every value against the paper's tables
-and prints a warning when a row diverges. And Statlog Image Seg. is the one row
-that does diverge: the file here has 18 features and the criterion returns 13,
-where the paper reports 14, which points to a one-column difference in how the
-original 19 attributes were reduced.
+and prints a warning when a row diverges.
+
+The files are written at full precision (`%.17g`), and on ill-conditioned data that
+matters: Image Segmentation contains many duplicate rows, so its smallest
+eigenvalues are tiny and rounding the entries to ten decimals moves the selected
+dimension from 15 to 13 while changing every entry by less than 1e-10. If a CSV of
+this repository is ever regenerated, keep the full precision or the last column of
+Table 3 will drift.
 
 ## Tuebingen CEP (`causality/data/tuebingen/`)
 

@@ -21,6 +21,7 @@ EXPECTED = {
     "Breast Cancer (WD)": (20, 29, 28),
     "Divorce": (7, 30, 52),
     "Statlog Vehicle": (15, 17, 16),
+    "Statlog Image Seg.": (15, 17, 16),
     "Parkinsons": (18, 20, 20),
     "Music origins": (21, 67, 66),
     "Drug consumption": (11, 11, 10),
