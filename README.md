@@ -129,26 +129,6 @@ surjective, non-injective `f`, `|Y| < |X|`), fGC is right on every pair of the g
 from fifty samples; on a bijective pair the two codelengths coincide and every
 method ties, which is why the benchmark restricts the mechanism.
 
-## Known discrepancies and limits
-
-* **Table 3, Statlog Image Seg.** The paper reports 14; recomputing with the CSV
-  shipped here (18 features, 2310 samples) gives **13**. The datasets in
-  `pca/data/` were saved with the feature columns only, and the preprocessing of
-  this row differs by one column; it is left visible in the output of
-  `run_pca_tables.py` instead of being silently adjusted. Every other row of
-  Tables 2 and 3 reproduces exactly.
-* **K = 6 on CEfinal** gives 55.36%, not the 54.46% recorded in older working
-  notes: one pair flips after the multinomial volume correction of Theorem 3.6.
-  The paper quotes neither value.
-* **The knee column** uses the `kneed` package when installed and an equivalent
-  built-in rule otherwise; the two agree on the datasets of the tables except
-  Music origins (8 vs 10), which is the nature of a heuristic.
-* **BlogFeedback** is not shipped (63 MB). Download `blogData_train.csv` into
-  `pca/data/` to reproduce its row: 280 columns, 252 of them constant and removed,
-  first 1000 samples, GC selects 24.
-* **SLOPE, IGCI and the categorical comparators (CISC, HCR, DC)** are not
-  re-implemented here; see `docs/EXPERIMENTS.md`.
-
 ## Provenance
 
 `causality/gc_module/` is the fGC implementation of the authors (the module behind
