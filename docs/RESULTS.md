@@ -19,6 +19,14 @@ Table 3 (`python pca/run_pca_tables.py`):
 | Music origins | 68 | 1059 | 8 | 10 in the paper | 66 | 21 |
 | Sonar | 60 | 208 | 8 | 56 | 58 | 14 |
 
+One row of this table needs a word: **Statlog Image Seg.** has numerical rank 15,
+not 18. Three of its eighteen eigenvalues sit at machine precision, the criterion
+selects exactly the rank, and the same curve has a second local minimum at 13, which
+is what an implementation that rounds the input to ten decimals returns. The paper
+reports 15 and says so in Section 4.3; the data file here is the official one at full
+precision, and the loader returns a contiguous array so that the SVD path does not
+change the last bits. See `docs/DATA.md`.
+
 Table 2 is the Sonar row. Table 1 (synthetic data with a known reduced dimension)
 comes from `python pca/run_pca_synthetic.py`, which builds the data from Sonar as the
 paper describes: keep the first `k` columns and replace the rest by random linear
